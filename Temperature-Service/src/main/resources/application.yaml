@@ -1,1 +1,29 @@
-
+spring:
+  application:
+    name: temperature-service
+  cloud:
+    stream:
+      bindings:
+        message-sink :
+         destination: amq.topic
+         binder: rabbit
+         group: temperature-consumer-group 
+         consumer :
+           concurrency: 1
+      rabbit:
+        bindings:
+          message-sink:
+            consumer:
+              bindQueue: true
+              bindingRoutingKey: temperature 
+              durableSubscription: true
+              declareExchange: true
+              exchangeDurable: true
+              exchangeType: topic
+              queueNameGroupOnly: true 
+  rabbitmq:
+    host: localhost
+    password: qweasd123
+    username: admin
+server:
+  port: 8082
