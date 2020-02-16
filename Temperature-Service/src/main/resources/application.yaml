@@ -1,3 +1,5 @@
+server:
+  port: 8082
 spring:
   application:
     name: temperature-service
@@ -23,7 +25,30 @@ spring:
               queueNameGroupOnly: true 
   rabbitmq:
     host: localhost
-    password: qweasd123
+    password: password
     username: admin
-server:
-  port: 8082
+  datasource:
+    url: jdbc:mysql://localhost:3306/attivitaprogettuale?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    generate-ddl: true
+    properties:
+     hibernate:
+       default_schema: schema
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create-drop
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: mail
+    password: password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls: 
+            enable: true
+
