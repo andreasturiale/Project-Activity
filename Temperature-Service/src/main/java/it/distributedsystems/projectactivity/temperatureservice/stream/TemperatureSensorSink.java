@@ -1,10 +1,20 @@
 package it.distributedsystems.projectactivity.temperatureservice.stream;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.messaging.SubscribableChannel;
+
+import it.distributedsystems.projectactivity.temperatureservice.model.TemperatureSensorMessage;
+import it.distributedsystems.projectactivity.temperatureservice.model.User;
+import it.distributedsystems.projectactivity.temperatureservice.repository.UserRepository;
 
 /**
  * TemperatureSensorSink
@@ -12,11 +22,38 @@ import org.springframework.messaging.SubscribableChannel;
 @EnableBinding(TemperatureSensorSink.InputChannel.class)
 public class TemperatureSensorSink {
 
+    @Autowired
+    private JavaMailSender emailSender;
+    @Autowired
+    private UserRepository userRepository;
     private final org.slf4j.Logger log = LoggerFactory.getLogger(this.getClass());
 
     @StreamListener(InputChannel.SINK)
-    public void handle(String message) {
-        log.info("new message:" + message + ", from worker :" + Thread.currentThread().getName());       
+    public void handle(TemperatureSensorMessage message) {
+        log.info("Received " + message.toString() + ", from worker :" + Thread.currentThread().getName());
+        List<User> usersToNotify=userRepository.findByThreasholdLessThanEqualAndNotifiedFalse(message.getValue()).orElse(new ArrayList<>());
+        List<User> usersAlreadyNotified=userRepository.findByThreasholdGreaterThanAndNotifiedTrue(message.getValue()).orElse(new ArrayList<>());
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        
+        for (User u: usersToNotify ){
+            mail.setTo(u.getEmail());
+            mail.setSubject("Temperature threashold exceeded");
+            mail.setText("WARNING: "+message.toString());
+            emailSender.send(mail);
+            u.setNotified(true);
+            userRepository.save(u);
+        }
+        
+        for (User u: usersAlreadyNotified ){
+            mail = new SimpleMailMessage();
+            mail.setTo(u.getEmail());
+            mail.setSubject("Temperature returned under threashold");
+            mail.setText("INFO: "+message.toString());
+            emailSender.send(mail);
+            u.setNotified(false);
+            userRepository.save(u);
+        }
     }
     
     public interface InputChannel {
