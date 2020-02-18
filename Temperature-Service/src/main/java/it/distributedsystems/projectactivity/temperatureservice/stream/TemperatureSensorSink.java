@@ -3,7 +3,6 @@ package it.distributedsystems.projectactivity.temperatureservice.stream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.Input;
@@ -26,11 +25,9 @@ public class TemperatureSensorSink {
     private JavaMailSender emailSender;
     @Autowired
     private UserRepository userRepository;
-    private final org.slf4j.Logger log = LoggerFactory.getLogger(this.getClass());
 
     @StreamListener(InputChannel.SINK)
     public void handle(TemperatureSensorMessage message) {
-        log.info("Received " + message.toString() + ", from worker :" + Thread.currentThread().getName());
         List<User> usersToNotify=userRepository.findByThreasholdLessThanEqualAndNotifiedFalse(message.getValue()).orElse(new ArrayList<>());
         List<User> usersAlreadyNotified=userRepository.findByThreasholdGreaterThanAndNotifiedTrue(message.getValue()).orElse(new ArrayList<>());
 
