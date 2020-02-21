@@ -22,4 +22,16 @@ public class UserService {
     public User getUserByEmail(String email){
         return userRepository.findByEmail(email).get();
     }
+
+    public User getUserById(int id){
+        return userRepository.findById(id).get();
+    }
+
+    public void deleteUserById(int id) {
+        userRepository.deleteById(id);
+    }
+
+    public void deleteUserByEmail(String email) {
+        userRepository.deleteByEmail(email);
+    }
 }
