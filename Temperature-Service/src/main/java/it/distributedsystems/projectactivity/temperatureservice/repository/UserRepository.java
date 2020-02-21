@@ -16,5 +16,7 @@ public interface UserRepository extends JpaRepository<User, Integer>{
     Optional<User> findById(int id);
     Optional<List<User>> findByThreasholdLessThanEqualAndNotifiedFalse(float threashold);
     Optional<List<User>> findByThreasholdGreaterThanAndNotifiedTrue(float threashold);
+    void deleteById(int id);
+    void deleteByEmail(String email);
 
 }
