@@ -31,28 +31,23 @@ public class TemperatureSensorSink {
         List<User> usersToNotify=userRepository.findByThreasholdLessThanEqualAndNotifiedFalse(message.getValue()).orElse(new ArrayList<>());
         List<User> usersAlreadyNotified=userRepository.findByThreasholdGreaterThanAndNotifiedTrue(message.getValue()).orElse(new ArrayList<>());
 
+        sendEmail(usersToNotify, "Temperature threashold exceeded", "WARNING: ", true, message);
+        sendEmail(usersAlreadyNotified, "Temperature returned under the threashold", "INFO: ", false, message);
+    }
+    
+    private void sendEmail(List<User> users, String subject, String text, boolean notified, TemperatureSensorMessage message){
         SimpleMailMessage mail = new SimpleMailMessage();
         
-        for (User u: usersToNotify ){
+        for (User u: users){
             mail.setTo(u.getEmail());
-            mail.setSubject("Temperature threashold exceeded");
-            mail.setText("WARNING: "+message.toString());
+            mail.setSubject(subject);
+            mail.setText(text+message.toString());
             emailSender.send(mail);
-            u.setNotified(true);
-            userRepository.save(u);
-        }
-        
-        for (User u: usersAlreadyNotified ){
-            mail = new SimpleMailMessage();
-            mail.setTo(u.getEmail());
-            mail.setSubject("Temperature returned under threashold");
-            mail.setText("INFO: "+message.toString());
-            emailSender.send(mail);
-            u.setNotified(false);
+            u.setNotified(notified);
             userRepository.save(u);
         }
     }
-    
+
     public interface InputChannel {
         String SINK = "message-sink";
         @Input(SINK)
