@@ -11,23 +11,23 @@
 
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
       <Pattern>
-        %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n
+        %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level - %msg%n
       </Pattern>
     </encoder>
 
     <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
       <fileNamePattern>
-        logs/log_%d{dd-MM-yyyy}_%i.log
+        messages/messages_%d{dd-MM-yyyy}_%i.log
       </fileNamePattern>
       <maxFileSize>10MB</maxFileSize>
       <maxHistory>10</maxHistory>
       <totalSizeCap>100MB</totalSizeCap>
     </rollingPolicy>
 
-</appender>
+    </appender>
      
     
-    <logger name="it.distributedsystems.projectactivity.temperatureservice" level="DEBUG"> 
+    <logger name="it.distributedsystems.projectactivity.temperatureservice" level="INFO"> 
         <appender-ref ref="FILE" /> 
     </logger> 
  
