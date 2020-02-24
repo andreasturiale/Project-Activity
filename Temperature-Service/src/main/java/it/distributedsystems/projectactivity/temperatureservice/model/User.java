@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 /**
  * User
@@ -15,8 +18,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
+    @Email(message = "The email '${validatedValue}' should be valid")
     @Column(unique = true)
     private String email;
+
+    @Min(value = 0, message = "The threashold must be at least {value}")
+    @Max(value = 50, message = "The threashold must be at most {value}")
     private float threashold;
     private boolean notified;
 
