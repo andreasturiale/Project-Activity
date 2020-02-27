@@ -3,6 +3,9 @@ server:
 spring:
   application:
     name: temperature-service
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
   cloud:
     stream:
       bindings:
@@ -51,4 +54,19 @@ spring:
           auth: true
           starttls: 
             enable: true
+resilience4j.circuitbreaker:
+    backends:
+        userService:
+            slidingWindowSize: 10
+            minimumNumberOfCalls: 5
+            permittedNumberOfCallsInHalfOpenState: 3
+            automaticTransitionFromOpenToHalfOpenEnabled: true
+            waitDurationInOpenState: 5s
+            failureRateThreshold: 35
+            ignoreExceptions:
+                - org.hibernate.exception.ConstraintViolationException
+                - it.distributedsystems.projectactivity.temperatureservice.exception.NoUserInCacheException
+                - it.distributedsystems.projectactivity.temperatureservice.exception.UserNotFoundException
+                - org.springframework.web.bind.MethodArgumentNotValidException
+
 
