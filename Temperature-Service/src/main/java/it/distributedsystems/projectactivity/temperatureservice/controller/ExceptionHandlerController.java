@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import it.distributedsystems.projectactivity.temperatureservice.exception.NoUserInCacheException;
+import it.distributedsystems.projectactivity.temperatureservice.exception.ServiceNotAvailableException;
 import it.distributedsystems.projectactivity.temperatureservice.exception.UserNotFoundException;
 import it.distributedsystems.projectactivity.temperatureservice.util.ApiError;
 
@@ -24,9 +24,9 @@ public class ExceptionHandlerController {
     }
 
     @ResponseBody
-    @ExceptionHandler(value = NoUserInCacheException.class)
-    public ResponseEntity<Object> handleException(NoUserInCacheException exception) {
-        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST.value(), "NOT_FOUND_IN_CACHE", exception.getMessage()));
+    @ExceptionHandler(value = ServiceNotAvailableException.class)
+    public ResponseEntity<Object> handleException(ServiceNotAvailableException exception) {
+        return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "SERVICE_NOT_AVAILABLE", exception.getMessage()));
     }
 
     @ResponseBody
