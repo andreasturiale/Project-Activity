@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * User
@@ -23,16 +24,21 @@ public class User implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @NotNull(message = "The email can't be null")
     @Email(message = "The email '${validatedValue}' should be valid")
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     @Min(value = 0, message = "The threashold must be at least {value}")
     @Max(value = 50, message = "The threashold must be at most {value}")
     private float threashold;
+
+    @Column(nullable = false)
     private boolean notified;
 
     public User() {
+        this.notified=false;
     }
 
     public User(int id, String email, float threashold, boolean notified) {
@@ -42,6 +48,13 @@ public class User implements Serializable{
         this.notified = notified;
     }
 
+    public User(int id, String email, float threashold) {
+        super();
+        this.id = id;
+        this.email = email;
+        this.threashold = threashold;
+    }
+    
     public int getId() {
         return id;
     }
