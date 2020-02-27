@@ -1,14 +1,11 @@
 <configuration >
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <!-- encoders are assigned the type
-             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
         <encoder>
             <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger.%M - %msg%n</pattern>
         </encoder>
-    </appender>
+    </appender> 
  
-   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-
+   <appender name="MESSAGE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
       <Pattern>
         %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level - %msg%n
@@ -23,15 +20,13 @@
       <maxHistory>10</maxHistory>
       <totalSizeCap>100MB</totalSizeCap>
     </rollingPolicy>
-
     </appender>
-     
     
-    <logger name="it.distributedsystems.projectactivity.temperatureservice" level="INFO"> 
-        <appender-ref ref="FILE" /> 
+    <logger name="temperature-message"> 
+        <appender-ref ref="MESSAGE" /> 
     </logger> 
  
-    <root level="INFO">
+    <root level="INFO"> 
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

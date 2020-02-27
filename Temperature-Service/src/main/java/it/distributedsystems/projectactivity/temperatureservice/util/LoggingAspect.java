@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
 
     
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger("temperature-message");
 
     /**
      * Advice that logs when a method is entered and exited.
