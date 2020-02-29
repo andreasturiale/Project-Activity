@@ -1,6 +1,8 @@
 package it.distributedsystems.projectactivity.temperatureservice.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,6 +39,8 @@ public class User implements Serializable{
     @Column(nullable = false)
     private boolean notified;
 
+    private Timestamp lastUpdate;
+
     public User() {
         this.notified=false;
     }
@@ -46,6 +50,7 @@ public class User implements Serializable{
         this.email = email;
         this.threashold = threashold;
         this.notified = notified;
+        this.lastUpdate = Timestamp.from(Instant.now());
     }
 
     public User(int id, String email, float threashold) {
@@ -53,6 +58,7 @@ public class User implements Serializable{
         this.id = id;
         this.email = email;
         this.threashold = threashold;
+        this.lastUpdate = Timestamp.from(Instant.now());
     }
     
     public int getId() {
@@ -87,9 +93,17 @@ public class User implements Serializable{
         this.notified = notified;
     }
 
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
     @Override
     public String toString() {
-        return "User [email=" + email + ", id=" + id + ", notified=" + notified + ", threashold=" + threashold + "]";
+        return "User [email=" + email + ", id=" + id + ", notified=" + notified + ", threashold=" + threashold + ", lastUpdate=" + lastUpdate +"]";
     }
 
 }
