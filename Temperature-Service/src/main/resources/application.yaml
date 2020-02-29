@@ -54,19 +54,28 @@ spring:
           auth: true
           starttls: 
             enable: true
+management.endpoints.web.exposure.include: '*'
+management.endpoint.health.show-details: always
+
 resilience4j.circuitbreaker:
     backends:
         userService:
+            register-health-indicator: true
             slidingWindowSize: 10
-            minimumNumberOfCalls: 5
-            permittedNumberOfCallsInHalfOpenState: 3
+            minimumNumberOfCalls: 3
+            permittedNumberOfCallsInHalfOpenState: 2
             automaticTransitionFromOpenToHalfOpenEnabled: true
-            waitDurationInOpenState: 5s
+            waitDurationInOpenState: 5000
             failureRateThreshold: 35
             ignoreExceptions:
-                - org.hibernate.exception.ConstraintViolationException
-                - it.distributedsystems.projectactivity.temperatureservice.exception.NoUserInCacheException
+                - org.springframework.dao.DataIntegrityViolationException
                 - it.distributedsystems.projectactivity.temperatureservice.exception.UserNotFoundException
-                - org.springframework.web.bind.MethodArgumentNotValidException
-
+resilience4j.retry:
+    instances:
+        userService:
+            maxRetryAttempts: 3
+            waitDuration: 500
+            ignoreExceptions:
+                - org.springframework.dao.DataIntegrityViolationException
+                - it.distributedsystems.projectactivity.temperatureservice.exception.UserNotFoundException
 
