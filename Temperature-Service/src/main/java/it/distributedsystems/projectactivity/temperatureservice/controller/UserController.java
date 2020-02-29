@@ -21,29 +21,24 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // @RequestMapping(value = "/users", method = RequestMethod.GET, params = "email")
-    // public User getUserByEmail(@RequestParam String email) {
-    //     return userService.getUserByEmail(email);
-    // }
-
     @RequestMapping(value = "/users", method = RequestMethod.GET, params = "userId")
     public User getUserById(@RequestParam int userId) {
         return userService.getUserById(userId);
     }
-
-    // @RequestMapping(value = "/users/delete", method = RequestMethod.GET, params = "email")
-    // public void deleteUserByEmail(@RequestParam String email) {
-    //     userService.deleteUserByEmail(email);
-    // }
 
     @RequestMapping(value = "/users/delete", method = RequestMethod.GET, params = "userId")
     public void deleteUserById(@RequestParam int userId) {
         userService.deleteUserById(userId);
     }
 
+    @RequestMapping(value = "/users/update", method = RequestMethod.POST)
+    public User updateUserById(@Valid @RequestBody User user) {
+        return userService.saveUser(user);
+    }
+
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public User addUser(@Valid @RequestBody User user) {
-        return userService.addUser(user);
+        return userService.saveUser(user);
     }
     
 }
