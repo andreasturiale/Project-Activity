@@ -3,10 +3,10 @@ package it.distributedsystems.projectactivity.temperatureservice.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.distributedsystems.projectactivity.temperatureservice.model.User;
@@ -21,17 +21,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET, params = "userId")
-    public User getUserById(@RequestParam int userId) {
+    @RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
+    public User getUserById(@PathVariable int userId) {
         return userService.getUserById(userId);
     }
 
-    @RequestMapping(value = "/users/delete", method = RequestMethod.GET, params = "userId")
-    public void deleteUserById(@RequestParam int userId) {
+    @RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
+    public void deleteUserById(@PathVariable int userId) {
         userService.deleteUserById(userId);
     }
 
-    @RequestMapping(value = "/users/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/users", method = RequestMethod.PUT)
     public User updateUserById(@Valid @RequestBody User user) {
         return userService.saveUser(user);
     }
