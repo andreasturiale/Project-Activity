@@ -2,6 +2,8 @@ package it.distributedsystems.projectactivity.temperatureservice.service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -83,6 +85,16 @@ public class UserService {
 
     public void fallbackDeleteUser(int id,UserNotFoundException e)  throws Throwable {
         throw e;
+    }
+
+    @Retry(name = "userService")
+    public List<User> getUserToWarn(float threashold){
+        return userRepository.findByThreasholdLessThanEqualAndNotifiedFalse(threashold).orElse(new ArrayList<>());
+    }
+
+    @Retry(name = "userService")
+    public List<User> getUserToNotify(float threashold){
+        return userRepository.findByThreasholdGreaterThanAndNotifiedTrue(threashold).orElse(new ArrayList<>());
     }
 
 }
