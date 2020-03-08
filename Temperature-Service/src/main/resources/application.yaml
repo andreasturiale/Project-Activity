@@ -61,15 +61,25 @@ resilience4j.circuitbreaker:
     backends:
         userService:
             register-health-indicator: true
-            slidingWindowSize: 10
-            minimumNumberOfCalls: 3
-            permittedNumberOfCallsInHalfOpenState: 2
+            slidingWindowSize: 100
+            minimumNumberOfCalls: 10
+            permittedNumberOfCallsInHalfOpenState: 25
             automaticTransitionFromOpenToHalfOpenEnabled: true
-            waitDurationInOpenState: 5000
-            failureRateThreshold: 35
+            waitDurationInOpenState: 4000
+            failureRateThreshold: 25
             ignoreExceptions:
                 - org.springframework.dao.DataIntegrityViolationException
                 - it.distributedsystems.projectactivity.temperatureservice.exception.UserNotFoundException
+        mailService:
+            register-health-indicator: true
+            slidingWindowSize: 100
+            minimumNumberOfCalls: 5
+            slow-call-duration-threshold: 3000
+            slow-call-rate-threshold: 20
+            permittedNumberOfCallsInHalfOpenState: 5
+            automaticTransitionFromOpenToHalfOpenEnabled: true
+            waitDurationInOpenState: 5000
+            failureRateThreshold: 35
 resilience4j.retry:
     instances:
         userService:
