@@ -13,6 +13,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
@@ -33,6 +34,7 @@ public class UserService {
     @Autowired
     private CacheManager cacheManager;
 
+    @Transactional
     @Retry(name = "userService", fallbackMethod = "fallbackAddUser") 
     @CachePut(value = "userCache", key = "#user.id")
     public User saveUser(User user) {
@@ -40,14 +42,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User fallbackAddUser(User user,Throwable e)  throws Throwable {
+    private User fallbackAddUser(User user,Throwable e)  throws Throwable {
         throw new ServiceNotAvailableException("Service momentaneously not available");
     }
 
-    public User fallbackAddUser(User user, DataIntegrityViolationException e)  throws Throwable {
+    private User fallbackAddUser(User user, DataIntegrityViolationException e)  throws Throwable {
         throw e;
     }
 
+    @Transactional(readOnly = true)
     @CircuitBreaker(name = "userService", fallbackMethod = "fallbackGetUser")
     @CachePut(value = "userCache", key = "#id")
     public User getUserById(int id) {
@@ -56,7 +59,7 @@ public class UserService {
         return user;
     }
 
-    public User fallbackGetUser(int id, Throwable e) throws Throwable {
+    private User fallbackGetUser(int id, Throwable e) throws Throwable {
         Cache cache = cacheManager.getCache("userCache");
         User u=cache.get(id,User.class);    
         if (u != null)
@@ -65,10 +68,11 @@ public class UserService {
             throw new ServiceNotAvailableException("Service momentaneously not available");
     }
 
-    public User fallbackGetUser(int id, UserNotFoundException e) throws Throwable {
+    private User fallbackGetUser(int id, UserNotFoundException e) throws Throwable {
         throw e;
     }
 
+    @Transactional
     @Retry(name = "userService", fallbackMethod = "fallbackDeleteUser")
     @CacheEvict(value="userCache",key="#id")
     public void deleteUserById(int id) {
@@ -79,22 +83,27 @@ public class UserService {
         }
     }
 
-    public void fallbackDeleteUser(int id,Throwable e)  throws Throwable {
+    private void fallbackDeleteUser(int id,Throwable e)  throws Throwable {
         throw new ServiceNotAvailableException("Service momentaneously not available");
     }
 
-    public void fallbackDeleteUser(int id,UserNotFoundException e)  throws Throwable {
+    private void fallbackDeleteUser(int id,UserNotFoundException e)  throws Throwable {
         throw e;
     }
 
+    @Transactional(readOnly = true)
     @Retry(name = "userService")
     public List<User> getUserToWarn(float threashold){
         return userRepository.findByThreasholdLessThanEqualAndNotifiedFalse(threashold).orElse(new ArrayList<>());
     }
 
+    @Transactional(readOnly = true)
     @Retry(name = "userService")
     public List<User> getUserToNotify(float threashold){
         return userRepository.findByThreasholdGreaterThanAndNotifiedTrue(threashold).orElse(new ArrayList<>());
     }
 
+    public void failure() throws ServiceNotAvailableException {
+        throw new ServiceNotAvailableException("Service momentaneously not available");
+    }
 }
