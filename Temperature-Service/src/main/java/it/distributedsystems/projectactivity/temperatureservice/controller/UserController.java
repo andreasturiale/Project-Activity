@@ -41,4 +41,8 @@ public class UserController {
         return userService.saveUser(user);
     }
     
+    @RequestMapping(value = "/failure", method = RequestMethod.GET)
+    public void failure() throws Throwable {
+        userService.failure();
+    }
 }
