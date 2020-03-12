@@ -53,9 +53,15 @@ public class User implements Serializable{
         this.lastUpdate = Timestamp.from(Instant.now());
     }
 
-    public User(int id, String email, float threashold) {
+    public User(String email, float threashold) {
         super();
-        this.id = id;
+        this.email = email;
+        this.threashold = threashold;
+        this.lastUpdate = Timestamp.from(Instant.now());
+    }
+
+    public User(String email, float threashold, boolean notified) {
+        this.notified=notified;
         this.email = email;
         this.threashold = threashold;
         this.lastUpdate = Timestamp.from(Instant.now());
@@ -104,6 +110,29 @@ public class User implements Serializable{
     @Override
     public String toString() {
         return "User [email=" + email + ", id=" + id + ", notified=" + notified + ", threashold=" + threashold + ", lastUpdate=" + lastUpdate +"]";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        if (email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!email.equals(other.email))
+            return false;
+        if (id != other.id)
+            return false;
+        if (notified != other.notified)
+            return false;
+        if (Float.floatToIntBits(threashold) != Float.floatToIntBits(other.threashold))
+            return false;
+        return true;
     }
 
 }
