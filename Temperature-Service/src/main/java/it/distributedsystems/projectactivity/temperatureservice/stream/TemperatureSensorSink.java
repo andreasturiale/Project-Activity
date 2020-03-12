@@ -19,11 +19,12 @@ public class TemperatureSensorSink {
 
     @Autowired
     private MailService mailService;
-
+    private int counter=0;
     private static final Logger log = LoggerFactory.getLogger(TemperatureSensorSink.class);
 
     @StreamListener(InputChannel.SINK)
     public void handle(TemperatureSensorMessage message) {
+        this.counter++;
         try {
 
             mailService.sendEmailToUsers(message);
@@ -33,6 +34,15 @@ public class TemperatureSensorSink {
         }
     }
 
+    
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+    
     public interface InputChannel {
         String SINK = "message-sink";
         @Input(SINK)
