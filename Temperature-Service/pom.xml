@@ -38,12 +38,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.junit.vintage</groupId>
-          <artifactId>junit-vintage-engine</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.amqp</groupId>
@@ -76,6 +70,13 @@
       <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
       <scope>compile</scope>
     </dependency> 
+    <!--GreenMail dependency to test MailService-->
+    <dependency>
+            <groupId>com.icegreen</groupId>
+            <artifactId>greenmail</artifactId>
+            <version>1.5.5</version>
+            <scope>test</scope>
+    </dependency>
     <!--Resilience4j dependencies-->
     <dependency>
           <groupId>io.github.resilience4j</groupId>
