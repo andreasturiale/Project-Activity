@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import it.distributedsystems.projectactivity.temperatureservice.exception.ServiceNotAvailableException;
 import it.distributedsystems.projectactivity.temperatureservice.model.TemperatureSensorMessage;
 import it.distributedsystems.projectactivity.temperatureservice.model.User;
 
@@ -43,5 +44,9 @@ public class MailService {
             u.setNotified(notified);
             userService.saveUser(u);
         }
+    }
+
+    public void failure() throws ServiceNotAvailableException {
+        throw new ServiceNotAvailableException("Service momentaneously not available");
     }
 }
