@@ -28,25 +28,25 @@ spring:
               queueNameGroupOnly: true 
   rabbitmq:
     host: localhost
-    password: password
+    password: qweasd123
     username: admin
   datasource:
-    url: jdbc:mysql://localhost:3306/attivitaprogettuale?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    url: jdbc:mysql://address:3306/schema?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
     username: root
-    password: password
+    password: qweasd123
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     generate-ddl: true
     properties:
      hibernate:
-       default_schema: schema
+       default_schema: attivitaprogettuale
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: create-drop
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: mail
+    host: smtp.gmail.com #to test localhost  
+    port: 587 #to test 2525
+    username: email
     password: password
     properties:
       mail:
@@ -54,6 +54,7 @@ spring:
           auth: true
           starttls: 
             enable: true
+            
 management.endpoints.web.exposure.include: '*'
 management.endpoint.health.show-details: always
 
@@ -73,7 +74,7 @@ resilience4j.circuitbreaker:
         mailService:
             register-health-indicator: true
             slidingWindowSize: 100
-            minimumNumberOfCalls: 5
+            minimumNumberOfCalls: 10
             slow-call-duration-threshold: 3000
             slow-call-rate-threshold: 20
             permittedNumberOfCallsInHalfOpenState: 5
