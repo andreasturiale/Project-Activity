@@ -27,8 +27,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
-    public void deleteUserById(@PathVariable int userId) {
+    public String deleteUserById(@PathVariable int userId) {
         userService.deleteUserById(userId);
+        return "User deleted successfully";
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.PUT)
