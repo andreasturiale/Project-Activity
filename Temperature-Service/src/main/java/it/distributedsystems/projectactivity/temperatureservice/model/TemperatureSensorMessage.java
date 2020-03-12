@@ -7,39 +7,18 @@ package it.distributedsystems.projectactivity.temperatureservice.model;
  */
 public class TemperatureSensorMessage {
 
-    int lat;
-    int lng;
     String unit;
-    String type;
     float value;
     String description;
     
-    public TemperatureSensorMessage(int lat, int lng, String unit, String type, float value, String description) {
-        this.lat = lat;
-        this.lng = lng;
+    public TemperatureSensorMessage(String unit, float value, String description) {
         this.unit = unit;
-        this.type = type;
         this.value = value;
         this.description = description;
     }
 
     public TemperatureSensorMessage(){}
 
-    public int getLat() {
-        return lat;
-    }
-
-    public void setLat(int lat) {
-        this.lat = lat;
-    }
-
-    public int getLng() {
-        return lng;
-    }
-
-    public void setLng(int lng) {
-        this.lng = lng;
-    }
 
     public String getUnit() {
         return unit;
@@ -47,14 +26,6 @@ public class TemperatureSensorMessage {
 
     public void setUnit(String unit) {
         this.unit = unit;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public float getValue() {
@@ -75,8 +46,7 @@ public class TemperatureSensorMessage {
 
     @Override
     public String toString() {
-        return "Temperature Sensor Message with payload: [description=" + description + ", lat=" + lat + ", lng=" + lng + ", type="
-                + type + ", unit=" + unit + ", value=" + value + "]";
+        return "Temperature Sensor Message with payload: [description=" + description +  ", unit=" + unit + ", value=" + value + "]";
     }
 
 }
