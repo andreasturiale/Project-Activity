@@ -28,25 +28,25 @@ spring:
               queueNameGroupOnly: true 
   rabbitmq:
     host: localhost
-    password: qweasd123
+    password: password
     username: admin
   datasource:
     url: jdbc:mysql://address:3306/schema?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
     username: root
-    password: qweasd123
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     generate-ddl: true
     properties:
      hibernate:
-       default_schema: attivitaprogettuale
+       default_schema: schema
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: create-drop
   mail:
     host: smtp.gmail.com #to test localhost  
     port: 587 #to test 2525
-    username: email
+    username: mail
     password: password
     properties:
       mail:
