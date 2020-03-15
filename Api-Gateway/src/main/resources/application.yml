@@ -11,8 +11,27 @@ spring:
       - id: temperatureModule
         uri: lb://TEMPERATURE-SERVICE
         predicates:
-        - Path=/users/**
+        - Path=/temperature/**
+        filters:
+        - name: CircuitBreaker
+          args:
+            name: temperatureService
+            fallbackUri: forward:/fallback/temperature
 eureka:
+  instance:
+    instance-id: http://localhost:8080
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+resilience4j.circuitbreaker:
+    backends:
+        temperatureService:
+            register-health-indicator: true
+            slidingWindowSize: 100
+            minimumNumberOfCalls: 10
+            slow-call-duration-threshold: 2500
+            slow-call-rate-threshold: 25
+            permittedNumberOfCallsInHalfOpenState: 25
+            automaticTransitionFromOpenToHalfOpenEnabled: true
+            waitDurationInOpenState: 3000
+            failureRateThreshold: 25
