@@ -21,28 +21,28 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/temperature/users/{userId}", method = RequestMethod.GET)
     public User getUserById(@PathVariable int userId) {
         return userService.getUserById(userId);
     }
 
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/temperature/users/{userId}", method = RequestMethod.DELETE)
     public String deleteUserById(@PathVariable int userId) {
         userService.deleteUserById(userId);
         return "User deleted successfully";
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.PUT)
+    @RequestMapping(value = "/temperature/users", method = RequestMethod.PUT)
     public User updateUserById(@Valid @RequestBody User user) {
         return userService.saveUser(user);
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    @RequestMapping(value = "/temperature/users", method = RequestMethod.POST)
     public User addUser(@Valid @RequestBody User user) {
         return userService.saveUser(user);
     }
     
-    @RequestMapping(value = "/failure", method = RequestMethod.GET)
+    @RequestMapping(value = "/temperature/users/failure", method = RequestMethod.GET)
     public void failure() throws Throwable {
         userService.failure();
     }
