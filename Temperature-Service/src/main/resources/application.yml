@@ -3,9 +3,8 @@ server:
 spring:
   application:
     name: temperature-service
-  cache:
-    jcache:
-      config: classpath:ehcache.xml
+  hazelcast:
+    config: classpath:hazelcast.xml
   cloud:
     stream:
       bindings:
@@ -63,7 +62,8 @@ resilience4j.circuitbreaker:
         userService:
             register-health-indicator: true
             slidingWindowSize: 100
-            minimumNumberOfCalls: 10
+            slow-call-duration-threshold: 2000
+            slow-call-rate-threshold: 25
             permittedNumberOfCallsInHalfOpenState: 25
             automaticTransitionFromOpenToHalfOpenEnabled: true
             waitDurationInOpenState: 4000
