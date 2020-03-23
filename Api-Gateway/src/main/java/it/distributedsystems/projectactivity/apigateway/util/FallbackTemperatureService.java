@@ -44,7 +44,6 @@ public class FallbackTemperatureService {
         String userId = uriVariables.get("userId");
         Cache cache = cacheManager.getCache("userCache");
         User u=cache.get(Integer.parseInt(userId),User.class);    
-        System.out.println("Bella vez "+userId);
         if (u != null)
             return buildResponseEntity(u);
         else 
