@@ -1,4 +1,4 @@
-package it.distributedsystems.projectactivity.apigateway;
+package it.distributedsystems.projectactivity.apigateway.util;
 
 import java.time.LocalDateTime;
 
