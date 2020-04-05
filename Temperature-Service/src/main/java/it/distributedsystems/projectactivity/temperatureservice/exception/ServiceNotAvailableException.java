@@ -1,7 +1,9 @@
 package it.distributedsystems.projectactivity.temperatureservice.exception;
 
 /**
- * NoUserInCacheException
+ * Custom exception thrown when the service doesn't work correctly.
+ * 
+ * @author Andrea Sturiale
  */
 public class ServiceNotAvailableException extends Exception {
 
