@@ -1,8 +1,6 @@
 package it.distributedsystems.projectactivity.temperatureservice.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +13,11 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
- * User
+ * Entity that corrisponds to the user's information. It contains the id, email, threashold over which want to be notified,
+ * a boolean variable to see if an user has been notified or not. For each field is specified both the SQL  
+ * and the business constraints.
+ * 
+ * @author Andrea Sturiale
  */
 @Entity
 public class User implements Serializable{
@@ -39,8 +41,6 @@ public class User implements Serializable{
     @Column(nullable = false)
     private boolean notified;
 
-    private Timestamp lastUpdate;
-
     public User() {
         this.notified=false;
     }
@@ -50,21 +50,18 @@ public class User implements Serializable{
         this.email = email;
         this.threashold = threashold;
         this.notified = notified;
-        this.lastUpdate = Timestamp.from(Instant.now());
     }
 
     public User(String email, float threashold) {
         super();
         this.email = email;
         this.threashold = threashold;
-        this.lastUpdate = Timestamp.from(Instant.now());
     }
 
     public User(String email, float threashold, boolean notified) {
         this.notified=notified;
         this.email = email;
         this.threashold = threashold;
-        this.lastUpdate = Timestamp.from(Instant.now());
     }
     
     public int getId() {
@@ -99,17 +96,9 @@ public class User implements Serializable{
         this.notified = notified;
     }
 
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
     @Override
     public String toString() {
-        return "User [email=" + email + ", id=" + id + ", notified=" + notified + ", threashold=" + threashold + ", lastUpdate=" + lastUpdate +"]";
+        return "User [email=" + email + ", id=" + id + ", notified=" + notified + ", threashold=" + threashold  +"]";
     }
 
     @Override
