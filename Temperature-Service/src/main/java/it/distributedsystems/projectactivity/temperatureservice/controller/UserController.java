@@ -13,7 +13,12 @@ import it.distributedsystems.projectactivity.temperatureservice.model.User;
 import it.distributedsystems.projectactivity.temperatureservice.service.UserService;
 
 /**
- * UserController
+ * This rest controller responds to the Http requests done to retrive or update
+ * user entities. It validates the input through the annotation @Valid and specifies 
+ * the Url to request through @RequestMapping. Each call is forwarded to
+ * the UserService.
+ * 
+ * @author Andrea Sturiale
  */
 @RestController
 public class UserController {
