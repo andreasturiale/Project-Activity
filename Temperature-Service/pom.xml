@@ -18,6 +18,7 @@
     <resilience4j.version>1.3.0</resilience4j.version>
   </properties>
   <dependencies>
+    <!-- RabbitMQ and Spring Cloud Stream dependencies -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-amqp</artifactId>
@@ -49,11 +50,13 @@
       <artifactId>spring-cloud-stream-test-support</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- Spring Boot Mail dependency -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-mail</artifactId>
       <scope>compile</scope>
     </dependency>
+    <!-- Jpa and Mysql dependencies -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -72,14 +75,14 @@
     </dependency> 
     <!--GreenMail dependency to test MailService-->
     <dependency>
-            <groupId>com.icegreen</groupId>
-            <artifactId>greenmail</artifactId>
-            <version>1.5.5</version>
-            <scope>test</scope>
+      <groupId>com.icegreen</groupId>
+      <artifactId>greenmail</artifactId>
+      <version>1.5.5</version>
+      <scope>test</scope>
     </dependency>
     <!--Resilience4j dependencies-->
     <dependency>
-          <groupId>io.github.resilience4j</groupId>
+      <groupId>io.github.resilience4j</groupId>
       <artifactId>resilience4j-spring-boot2</artifactId>
       <version>${resilience4j.version}</version>
     </dependency>
@@ -113,7 +116,7 @@
       <artifactId>resilience4j-timelimiter</artifactId>
       <version>${resilience4j.version}</version>
     </dependency>
-    <!--Ehcache dependencies-->
+    <!--Hazelcast dependencies-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-cache</artifactId>
@@ -127,12 +130,12 @@
       <groupId>com.hazelcast</groupId>
       <artifactId>hazelcast-spring</artifactId>
     </dependency>
+    <!-- Monitoring system dependencies -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
       <scope>compile</scope>
     </dependency>
-    <!-- Micrometer -->
     <dependency>
         <groupId>io.micrometer</groupId>
         <artifactId>micrometer-registry-prometheus</artifactId>
