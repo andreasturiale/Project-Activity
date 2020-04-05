@@ -1,6 +1,8 @@
 package it.distributedsystems.projectactivity.temperatureservice.service;
 
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -13,7 +15,10 @@ import it.distributedsystems.projectactivity.temperatureservice.model.Temperatur
 import it.distributedsystems.projectactivity.temperatureservice.model.User;
 
 /**
- * MailService
+ * This service is used by TemperatureSensorSink to send 
+ * email to the users after receiving a message from the broker.
+ * 
+ *@author Andrea Sturiale
  */
 @Service
 @CircuitBreaker(name = "mailService")
@@ -24,28 +29,38 @@ public class MailService {
     @Autowired
     private UserService userService;
 
-    public void sendEmailToUsers(TemperatureSensorMessage message){
+    public void sendEmailToUsers(TemperatureSensorMessage message) {
+        //first retrive the list of users to warn from the database through UserService
+        List<User> usersToWarn = userService.getUserToWarn(message.getValue());
 
-        List<User> usersToNotify = userService.getUserToWarn(message.getValue());
-        List<User> usersAlreadyNotified = userService.getUserToNotify(message.getValue());
-
-        sendEmail(usersToNotify, "Temperature threashold exceeded", "WARNING: ", true, message);
-        sendEmail(usersAlreadyNotified, "Temperature returned under the threashold", "INFO: ", false, message);
+        //I send the email only if the list is not empty
+        if(usersToWarn.size()>0)
+            sendEmail(usersToWarn, "Temperature threashold exceeded", "WARNING: ", true, message);
     }
 
     private void sendEmail(List<User> users, String subject, String text, boolean notified, TemperatureSensorMessage message){
         SimpleMailMessage mail = new SimpleMailMessage();
-        
+
+        //I generate an array of the users mails in order to reach all of them
+        //with a single email instead of a create multiple notifications, one for each user
+        String[] emails=new String[users.size()];
+        users.stream().map(u -> u.getEmail()).collect(Collectors.toList()).toArray(emails);
+
+        //configure and send the email
+        mail.setTo(emails);
+        mail.setSubject(subject);
+        mail.setText(text+message.toString());
+        emailSender.send(mail);
+
+        //so I set the "notified" attribute of the users to true avoiding to send other e-mails in the future
         for (User u: users){
-            mail.setTo(u.getEmail());
-            mail.setSubject(subject);
-            mail.setText(text+message.toString());
-            emailSender.send(mail);
             u.setNotified(notified);
             userService.saveUser(u);
         }
+
     }
 
+    //Method used to test the circui breaker
     public void failure() throws ServiceNotAvailableException {
         throw new ServiceNotAvailableException("Service momentaneously not available");
     }
