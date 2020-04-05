@@ -1,15 +1,17 @@
 package it.distributedsystems.projectactivity.temperatureservice.model;
 
 /**
- * TemperatureSensorMessage
+ * This class represent a custom message produced by temperature sensor. 
+ * It contains the unit and the value of the measurement plus an eventual
+ * description like for example the symbolic position of the sensor.
  * 
- * This class represent a custom message produced by temperature sensor 
+ * @author Andrea Sturiale
  */
 public class TemperatureSensorMessage {
 
-    String unit;
-    float value;
-    String description;
+    private String unit;
+    private float value;
+    private String description;
     
     public TemperatureSensorMessage(String unit, float value, String description) {
         this.unit = unit;

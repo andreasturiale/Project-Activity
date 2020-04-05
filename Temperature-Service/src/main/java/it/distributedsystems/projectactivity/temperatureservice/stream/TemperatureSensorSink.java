@@ -12,23 +12,25 @@ import it.distributedsystems.projectactivity.temperatureservice.model.Temperatur
 import it.distributedsystems.projectactivity.temperatureservice.service.MailService;
 
 /**
- * TemperatureSensorSink
+ * This class receives the message sent by temperature sensor through 
+ * Spring Cloud Stream. The method invoked each time a message arrives
+ * is marked via @StreamListener annotation.
+ * 
+ * @author Andrea Sturiale
  */
 @EnableBinding(TemperatureSensorSink.InputChannel.class)
 public class TemperatureSensorSink {
 
     @Autowired
     private MailService mailService;
-    private int counter=0;
+    private int counter=0; //variable used only for JUnit test of this class
     private static final Logger log = LoggerFactory.getLogger(TemperatureSensorSink.class);
 
     @StreamListener(InputChannel.SINK)
     public void handle(TemperatureSensorMessage message) {
         this.counter++;
         try {
-
-            mailService.sendEmailToUsers(message);
-            
+            mailService.sendEmailToUsers(message); 
         } catch (Exception e) {
             log.error("Error in sending mail: " + e.getMessage());
         }
@@ -43,6 +45,8 @@ public class TemperatureSensorSink {
         this.counter = counter;
     }
     
+    //This interface is used to specify the binding ("message-sink")
+    // we are referring to in TemperatureSensorSink
     public interface InputChannel {
         String SINK = "message-sink";
         @Input(SINK)
