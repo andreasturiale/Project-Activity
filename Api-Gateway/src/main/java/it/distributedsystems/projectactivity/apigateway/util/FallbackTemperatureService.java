@@ -17,7 +17,12 @@ import org.springframework.web.server.ServerWebExchange;
 
 import it.distributedsystems.projectactivity.temperatureservice.model.User;
 /**
- * Fallback
+ * This controller is invoked each time the TemperatureService is not reached.
+ * For the HTTP Get request the distributed cache is accessed to find the searched user.
+ * If he is not found a custom error message is sent. For the other methods is directly 
+ * returned an error message.
+ * 
+ * @author Andrea Sturiale
  */
 @RestController()
 public class FallbackTemperatureService {
@@ -40,14 +45,16 @@ public class FallbackTemperatureService {
 
     @GetMapping("/fallback/temperature")
     public ResponseEntity<Object> fallbackGet(ServerWebExchange exchange) {
+        //First I retrieve the userId variable saved in exchange
         Map<String, String> uriVariables = ServerWebExchangeUtils.getUriTemplateVariables(exchange);
         String userId = uriVariables.get("userId");
+        //Then I check if the userId is in distributed cache
         Cache cache = cacheManager.getCache("userCache");
         User u=cache.get(Integer.parseInt(userId),User.class);    
         if (u != null)
             return buildResponseEntity(u);
         else 
-            return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), "TEMPERATURE_SERVICE_UNAVAILABLE", "Fallback Method"));
+            return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "TEMPERATURE_SERVICE_UNAVAILABLE", "Fallback Method"));
     }
 
     @PostMapping("/fallback/temperature")

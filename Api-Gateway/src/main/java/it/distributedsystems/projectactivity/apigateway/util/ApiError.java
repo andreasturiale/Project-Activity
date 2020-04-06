@@ -5,7 +5,10 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
- * ApiError
+ * This represents a custom error message returned by UserController
+ * each time a request doesn't respect any constraint.
+ * 
+ * @author Andrea Sturiale
  */
 public class ApiError {
 
