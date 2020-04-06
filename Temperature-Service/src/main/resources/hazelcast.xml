@@ -4,6 +4,7 @@
         xmlns="http://www.hazelcast.com/schema/config"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
+    <!-- This is the cache containing the user entities -->
     <map name="userCache">
         <max-size>200</max-size>
         <eviction-policy>LFU</eviction-policy>
