@@ -8,7 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * CacheConfiguration
+ * This configuration is needed by Spring boot 
+ * to instantiate the CacheManager correctly.
+ * 
+ * @author Andrea Sturiale
  */
 @Configuration
 public class CacheConfiguration {

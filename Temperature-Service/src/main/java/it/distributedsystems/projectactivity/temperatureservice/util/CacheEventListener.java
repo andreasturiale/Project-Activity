@@ -5,7 +5,10 @@ import com.hazelcast.core.EntryListener;
 import com.hazelcast.core.MapEvent;
 
 /**
- * CacheEvetListener
+ * This class contains the methods that will be invoked whenever 
+ * the Hazelcast cache is accessed. 
+ * 
+ * @author Andrea Sturiale
  */
 public class CacheEventListener implements EntryListener<String, String> {
 
@@ -32,7 +35,6 @@ public class CacheEventListener implements EntryListener<String, String> {
     @Override
     public void mapEvicted(MapEvent event) {
         System.out.println("mapEvicted:" + event);
-
     }
 
     @Override

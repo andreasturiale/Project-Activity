@@ -10,7 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * LoggingAdvice
+ * This is the aspect used to log automatically the message receveid by 
+ * the sensor through Spring AOP.
+ * 
+ * @author Andrea Sturiale
  */
 @Aspect
 @Component
@@ -20,9 +23,8 @@ public class LoggingAspect {
     private final Logger log = LoggerFactory.getLogger("temperature-message");
 
     /**
-     * Advice that logs when a method is entered and exited.
+     * Advice that log the parameter of input of TemperatureSensorSink.handle whenever it is executed .
      *
-     * @param joinPoint join point for advice
      */
     @Before("execution(void it.distributedsystems.projectactivity.temperatureservice.stream.TemperatureSensorSink.handle(..))")
     public void logBefore(JoinPoint joinPoint) {        
