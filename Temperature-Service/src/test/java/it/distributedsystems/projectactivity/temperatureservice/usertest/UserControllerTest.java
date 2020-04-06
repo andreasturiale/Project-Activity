@@ -26,7 +26,7 @@ public class UserControllerTest extends AbstractTest {
 
    @Test
    public void addUserTest() throws Exception {
-      String uri = "/users";
+      String uri = "/temperature/users";
       User user = new User(1,"test@mail.com",29,false);
       String inputJson = super.mapToJson(user);
       MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
@@ -42,7 +42,7 @@ public class UserControllerTest extends AbstractTest {
 
    @Test
    public void duplicateEntryTest() throws Exception {
-      String uri = "/users";
+      String uri = "/temperature/users";
       User user = new User(1,"test@mail.com",29,false);
       user=this.userService.saveUser(user);
       String inputJson = super.mapToJson(new User("test@mail.com",29));
@@ -58,7 +58,7 @@ public class UserControllerTest extends AbstractTest {
 
    @Test
    public void validationInputTest() throws Exception {
-      String uri = "/users";
+      String uri = "/temperature/users";
       User user = new User();
       user.setEmail("testmail.com");
       user.setThreashold(29);
@@ -73,7 +73,7 @@ public class UserControllerTest extends AbstractTest {
 
    @Test
    public void updateUserTest() throws Exception {
-      String uri = "/users";
+      String uri = "/temperature/users";
       User user = new User();
       user.setId(1);
       user.setEmail("test@mail.com");
@@ -93,7 +93,7 @@ public class UserControllerTest extends AbstractTest {
 
    @Test
    public void getUserTest() throws Exception {
-      String uri = "/users/";
+      String uri = "/temperature/users/";
       User user = new User();
       user.setEmail("test@mail.com");
       user.setThreashold(29);
@@ -111,7 +111,7 @@ public class UserControllerTest extends AbstractTest {
 
    @Test
    public void deleteUserTest() throws Exception {
-      String uri = "/users/";
+      String uri = "/temperature/users/";
       User user = new User();
       user.setEmail("test@mail.com");
       user.setThreashold(29);

@@ -47,15 +47,6 @@ public class UserServiceTest extends AbstractTest {
     }
 
     @Test
-    public void getUsersToNotifyTest() throws Exception {
-       User user=new User("test@mail.com",29,true);
-       int id=userService.saveUser(user).getId();
-       List<User> users=userService.getUserToNotify(27);
-       assertEquals(users.get(0).getId(), user.getId());
-       userService.deleteUserById(id);
-    }
-
-    @Test
     public void getUsersToWarnTest() throws Exception {
        User user=new User("test@mail.com",29);
        int id=userService.saveUser(user).getId(); 
