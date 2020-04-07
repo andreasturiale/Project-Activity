@@ -1,28 +1,37 @@
 spring:
   application:
     name: api-gateway
+  # This is the location for hazecalst configuration file
+  hazelcast:
+    config: classpath:hazelcast.xml
   cloud:
+    # Property to enable Spring Cloud ReactiveLoadBalancer instead of Ribbon that is in maintenance mode
+    loadbalancer:
+      ribbon:
+        enabled: false
     gateway:
       discovery:
         locator:
           enabled: true
           lowerCaseServiceId: true
+      # Route for TemperatureService
       routes:
       - id: temperatureModule
-        uri: lb://TEMPERATURE-SERVICE
+        uri: lb://TEMPERATURE-SERVICE  # lb --> client side load balancer of the list obtained from Eureka
         predicates:
-        - Path=/temperature/**
+        - Path=/temperature/users,/temperature/users/{userId}
+        # Circuit Breaker filter to manage the requests
         filters:
         - name: CircuitBreaker
           args:
             name: temperatureService
             fallbackUri: forward:/fallback/temperature
+# Configuration of Eureka Server url
 eureka:
-  instance:
-    instance-id: http://localhost:8080
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+# Configuration of circuit breaker
 resilience4j.circuitbreaker:
     backends:
         temperatureService:
