@@ -1,3 +1,4 @@
+# Configuration for Eureka Server in standalone mode
 server:
  port: 8761
 eureka:
