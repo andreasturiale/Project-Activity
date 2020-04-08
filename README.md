@@ -7,8 +7,7 @@ The application domain involves the creation of a system that is capable of rece
 
 Analyzing it in more detail, it is characterized by:
 
-* **Temperature sensor**: it corresponds to the source of the stream which. It collects information on the temperature of the surrounding environment and sends them via Mqtt to the message broker. Since I haven't a real sensor, I would simulate it through a script written in python which,
-based on the 'Eclipse paho' library, it allows me to send customizable Mqtt messages through a special configuration file.
+* **Temperature sensor**: it corresponds to the source of the stream which. It collects information on the temperature of the surrounding environment and sends them via Mqtt to the message broker. Since I haven't a real sensor, I would simulate it through a script written in python which, based on the 'Eclipse paho' library, it allows me to send customizable Mqtt messages through a special configuration file.
 
 * **Message Broker**: intermediary that receives the messages from the temperature sensor and forwards them to the various subscribers. RabbitMQ was used as a message broker, which has a plugin that enables support for the Mqtt protocol for exchanging messages.
 
@@ -17,4 +16,8 @@ based on the 'Eclipse paho' library, it allows me to send customizable Mqtt mess
 * **ApiGateway**: Spring Cloud component that takes care of receiving requests from different clients and forwards them to the appropriate microservice. In this case it exposes an interface accessible via the Rest protocol with which the configuration parameters of the Temperature Service can be changed.
 This software module ensures correct isolation between external applications and the internal architecture of the sensor monitoring system.
 
-* **Discovery Service**: component that keeps track of the information of all the services that are performing within the system, in the specific IP address and port of each.
+* **Discovery Service**: component that keeps track of the information of all the services that are performing within the system, in the specific IP address and port of each.</br>
+
+---
+
+To see the full italian documentation go to */Doc/Documentazione.pdf*.
