@@ -15,6 +15,7 @@ import it.distributedsystems.projectactivity.temperatureservice.model.User;
  * @author Andrea Sturiale
  */
 public interface UserRepository extends JpaRepository<User, Integer>{
-    //This method will be converted in the corrisponding SQL query
+    //This method will be converted in the corrisponding SQL query. 
+    //It finds the users whose threashold is less then the value passed and that aren't notified yet.
     Optional<List<User>> findByThreasholdLessThanEqualAndNotifiedFalse(float threashold);
 }
