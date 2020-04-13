@@ -1,10 +1,11 @@
 package it.distributedsystems.projectactivity.temperatureservice.service;
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ import it.distributedsystems.projectactivity.temperatureservice.model.User;
 /**
  * This service is used by TemperatureSensorSink to send 
  * email to the users after receiving a message from the broker.
+ * I added a circuit breaker in order to control the requests 
+ * sent to Gmail Server.
  * 
  *@author Andrea Sturiale
  */
@@ -26,6 +29,8 @@ public class MailService {
 
     @Autowired
     private JavaMailSender emailSender;
+    @Autowired
+    private CacheManager cacheManager;
     @Autowired
     private UserService userService;
 
@@ -52,15 +57,17 @@ public class MailService {
         mail.setText(text+message.toString());
         emailSender.send(mail);
 
-        //so I set the "notified" attribute of the users to true avoiding to send other e-mails in the future
+        //then I set the "notified" attribute of the users to true avoiding to send other e-mails in the future.
+        Cache cache = cacheManager.getCache("userCache");
         for (User u: users){
             u.setNotified(notified);
-            userService.saveUser(u);
+            //I evict the users in the Cache if they are present because they have been modified.
+            cache.evictIfPresent(u.getId());
         }
-
+        userService.saveUsers(users);
     }
 
-    //Method used to test the circui breaker
+    //Method used to test the circuit breaker
     public void failure() throws ServiceNotAvailableException {
         throw new ServiceNotAvailableException("Service momentaneously not available");
     }

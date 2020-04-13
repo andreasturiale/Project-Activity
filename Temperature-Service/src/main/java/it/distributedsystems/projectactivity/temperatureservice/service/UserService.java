@@ -10,6 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -86,9 +87,13 @@ public class UserService {
         throw e;
     }
 
-    //Method used only by MailService to find thenlist of users to notify. 
-    //if there isn't any user, an empty list is returned
-    @Transactional
+    /**
+     * Method used only by MailService to find the list of users to notify, 
+     * if there isn't any user, an empty list is returned.
+     * Isolation.READ_COMMITTED is needed to avoid "dirty reads" 
+     * when different instances of TemperatureService are running
+     */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Retry(name = "retryService")
     public List<User> getUserToWarn(float threashold){
         return userRepository.findByThreasholdLessThanEqualAndNotifiedFalse(threashold).orElse(new ArrayList<>());
@@ -97,5 +102,12 @@ public class UserService {
     //Method used only to test the circuit breaker
     public void failure() throws ServiceNotAvailableException {
         throw new ServiceNotAvailableException("Service temporarly unavailable");
+    }
+
+    //Method used only by MailService to save the list of users already notified. 
+    @Transactional
+    @Retry(name = "retryService")
+    public  void saveUsers(List<User> users){
+        userRepository.saveAll(users);
     }
 }
