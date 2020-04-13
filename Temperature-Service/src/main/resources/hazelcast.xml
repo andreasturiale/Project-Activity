@@ -4,6 +4,17 @@
         xmlns="http://www.hazelcast.com/schema/config"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
+    <!-- This is the network configuration for the cluster. In this case I use fix adress to find the nodes joining it. 
+        In production phase Multicast should be configured as discovery protocol instead. -->
+    <network>
+        <join>
+        <multicast enabled="false"></multicast>
+        <tcp-ip enabled="true">
+            <member>localhost</member>
+        </tcp-ip>
+        </join>
+    </network>
+
     <!-- This is the cache containing the user entities -->
     <map name="userCache">
         <max-size>200</max-size>
