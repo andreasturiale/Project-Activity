@@ -73,13 +73,14 @@ public class UserControllerTest extends AbstractTest {
 
    @Test
    public void updateUserTest() throws Exception {
-      String uri = "/temperature/users";
+      String uri = "/temperature/users/";
       User user = new User();
       user.setId(1);
       user.setEmail("test@mail.com");
       user.setThreashold(29);
       user=userService.saveUser(user);
-      user.setEmail("update@mail.com");
+      user.setEmail("update@mail.com");      
+      uri=uri+user.getId();
       String inputJson = super.mapToJson(user);
       MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
          .contentType(MediaType.APPLICATION_JSON_VALUE)

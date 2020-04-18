@@ -37,7 +37,7 @@ public class UserController {
         return "User deleted successfully";
     }
 
-    @RequestMapping(value = "/temperature/users", method = RequestMethod.PUT)
+    @RequestMapping(value = "/temperature/users/{userId}", method = RequestMethod.PUT)
     public User updateUserById(@Valid @RequestBody User user) {
         return userService.saveUser(user);
     }
