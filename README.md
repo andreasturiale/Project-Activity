@@ -19,5 +19,14 @@ This software module ensures correct isolation between external applications and
 * **Discovery Service**: component that keeps track of the information of all the services that are performing within the system, in the specific IP address and port of each.</br>
 
 ---
+## Usage
 
+First You have to generate the jar for each project with the command:</br>
+```
+./mvnw package
+```
+Then you need to run the jar. **Note** that the discovery service should start before the others.</br>
+```
+./java -jar <file>.jar
+```
 To see the full italian documentation go to */Doc/Documentazione.pdf*.

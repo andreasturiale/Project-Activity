@@ -6,7 +6,7 @@ This microservice consists of two main modules: the first one manages the Mqtt m
 ![Architettura](/Doc/images/Temperature-Service.png) </br>
 
 ## Configuration
-Before the execution you have to configure the **application.yml** in order to connect with Mysql database, RabbitMQ and Gmail. </br>
+**Note:** before the execution you have to configure the **application.yml** and **hazelcast.xml** in order to connect with Mysql database, RabbitMQ, Gmail and Hazelcast. </br>
 
 ---
 
