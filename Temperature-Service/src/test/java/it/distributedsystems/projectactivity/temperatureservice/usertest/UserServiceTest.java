@@ -13,6 +13,8 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 // import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
@@ -29,6 +31,8 @@ public class UserServiceTest extends AbstractTest {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private CacheManager cacheManager;
     
     @Test
     public void addUserTest() throws Exception {
@@ -63,6 +67,24 @@ public class UserServiceTest extends AbstractTest {
        assertThrows(EntityNotFoundException.class, () -> userService.getUserById(id));
     }
 
+    @Test
+    public void addUserCacheTest() throws Exception {
+       User user=userService.saveUser(new User("test@mail.com",29));
+       Cache cache = cacheManager.getCache("userCache");
+       User u=cache.get(user.getId(),User.class);    
+       assertEquals(u.getEmail(), "test@mail.com");
+       userService.deleteUserById(user.getId());
+    }
+
+    @Test
+    public void deleteUserCacheTest() throws Exception {
+       User user=userService.saveUser(new User("test@mail.com",29));
+       userService.deleteUserById(user.getId());
+       Cache cache = cacheManager.getCache("userCache");
+       User u=cache.get(user.getId(),User.class);    
+       assertEquals(u, null);
+    }
+    
    //  @Test
    //  public void circuitBreakerTest() throws Exception {
    //     for (int i=0;i<10;i++)
