@@ -104,7 +104,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/temperature/users",
+					"raw": "http://localhost:8080/temperature/{userId}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -112,7 +112,7 @@
 					"port": "8080",
 					"path": [
 						"temperature",
-						"users"
+						"{userId}"
 					]
 				},
 				"description": "This request is used to update the information of the user."
