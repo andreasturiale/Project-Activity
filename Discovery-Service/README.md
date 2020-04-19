@@ -1,7 +1,7 @@
 # Discovery-Service
 
 ## Description
-The Eureka Server is a component that maintains the information of all the services that are running within the system, in the specific IP address and port of each.
+The Eureka Server is a component that manages the information of all the services that are running within the system, in the particurarly IP address and port of them.
 The integration of Spring Cloud with the Eureka library of Netflix OSS facilitates the implementation of the Discovery Server by limiting it to three simple steps:
 
 1. You need to add *spring-cloud-starter-netflix-eureka-server* dependencies in the project.
